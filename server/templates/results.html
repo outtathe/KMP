@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ css_file }}">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Результаты поиска</title>
+</head>
+<body>
+    <h1>Результаты поиска</h1>
+    <div id="positions">
+        <h3>Позиции найденных подстрок:</h3>
+        <ul>
+            {% for position in positions %}
+            <li>{{ position }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ css_file }}">
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Поиск подстроки</title>
+</head>
+<body>
+    <h1>Поиск подстроки</h1>
+    <form method="POST" action="/search" id="search-form">
+        <label for="text-input">Текст:</label>
+        <br>
+        <input type="text" id="text-input" name="text" placeholder="Введите текст">
+        <br>
+        <label for="substring-input">Подстрока:</label>
+        <br>
+        <input type="text" id="substring-input" name="substring" placeholder="Введите подстроку">
+        <br>
+        <button type="button" onclick="searchSubstring()">Найти</button>
+    </form>
+    <div id="results">
+        <h3>Результаты:</h3>
+        <ul id="positions"></ul>
+    </div>
+    <script>
+        function searchSubstring() {
+    // Получение значений текста и подстроки
+    var text = document.getElementById("text-input").value;
+    var substring = document.getElementById("substring-input").value;
+
+    // Отправка запроса на сервер
+    fetch("/search", {
+        method: "POST",
+        body: new FormData(document.getElementById("search-form"))
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Обработка полученных результатов
+        var positions = data.positions;
+        var positionsList = document.getElementById("positions");
+        positionsList.innerHTML = "";
+        if (positions.length > 0) {
+            positions.forEach(position => {
+                var listItem = document.createElement("li");
+                listItem.innerText = "Найдено на позиции: " + position;
+                positionsList.appendChild(listItem);
+            });
+        } else {
+            var listItem = document.createElement("li");
+            listItem.innerText = "Подстрока не найдена";
+            positionsList.appendChild(listItem);
+        }
+    })
+    .catch(error => {
+        console.error("Ошибка при выполнении запроса:", error);
+    });
+}
+
+    </script>
+</body>
+</html>
